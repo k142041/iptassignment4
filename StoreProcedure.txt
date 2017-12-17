@@ -1,0 +1,16 @@
+USE [IPTassignment4]
+GO
+/****** Object:  StoredProcedure [dbo].[spsearch]    Script Date: 12/17/2017 16:19:56 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER	proc [dbo].[spsearch]
+@name varchar(50),
+@minPrice nchar(10),
+@maxPrice nchar(10),
+@category int
+AS
+BEGIN
+select ProductName , ProductDescription, ProductPrice from Product where ProductName = @name and ProductPrice >= @minPrice
+END
