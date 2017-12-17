@@ -1,0 +1,96 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Assignment_4_TestFileForMVC_2.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Product Home</h2>
+
+
+<div class="form-group">
+    @*    <label for="exampleInputEmail1">Email address</label>*@
+    @using (Html.BeginForm("Index", "Products", FormMethod.Get))
+    {
+
+        @*<input style="display:inline;" type="text" class="form-control" id="searchField" aria-describedby="SearchProducts" placeholder="Search!">*@
+        @Html.TextBox("search", "", new { @class = "form-control", @placeholder = "Search", @style = "display:inline;", @required="true"});
+
+
+        <input style="display:inline;" class="btn btn-default" type="submit" value="Search" />
+        <br />
+        <small id="SearchProducts" class="form-text text-muted">Searching Criteria Depends upon Radio Button</small>
+
+        <br />
+        <b>Search By: </b> @Html.RadioButton("searchBy", "Name", true)<label>Name </label>
+        @Html.RadioButton("searchBy", "Description")<label>Description </label>
+        
+        @Html.DropDownList("Catagories", "All Categories")
+
+        <div>
+            <lable><b>Price:</b> </lable>
+            @Html.TextBox("to", "", new { @class = "form-control", @placeholder = "Min", @style = "display:inline; width:80px;",  })<label>&thinsp; -to-</label>
+            @Html.TextBox("from", "", new { @class = "form-control", @placeholder = "Max", @style = "display:inline; width:80px;",  })
+        </div>
+    }
+</div>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ProductDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ProductPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Active)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().otherAttributes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Category.CategoryName)
+        </th>
+        <th>Action</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Active)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.otherAttributes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProductId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ProductId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProductId })
+        </td>
+    </tr>
+}
+
+</table>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchBy= Request.QueryString["searchBy"], search = Request.QueryString["search"] }))
+
